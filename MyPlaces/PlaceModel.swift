@@ -6,13 +6,14 @@
 //  Copyright © 2019 Andrey. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 struct Place {
     var name: String
-    var location: String
-    var type: String
-    var image: String
+    var location: String?
+    var type: String?
+    var restaurantImage: String?
+    var image: UIImage?
     
 }
 
@@ -28,7 +29,7 @@ func getPlaces() -> [Place] {
     var places = [Place]()
     
     for place in restaurantNames {
-        places.append(Place(name: place, location: "Dnepr", type: "Restaurant", image: place))
+        places.append(Place(name: place, location: "Dnepr", type: "Restaurant", restaurantImage: place, image: nil))
     }
     
     return places
