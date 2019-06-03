@@ -55,7 +55,7 @@ class NewPlaceViewController: UITableViewController {
         if indexPath.row == 0 {
             
             let cameraIcon = UIImage(named: "camera")
-            let photoIcon = UIImage(named: "photo1")
+            let photoIcon = UIImage(named: "photo")
             
             let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
             let camera = UIAlertAction(title: "Camera", style: .default) { _ in
@@ -86,15 +86,21 @@ class NewPlaceViewController: UITableViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier != "showMap" {
+        
+        guard let identifier = segue.identifier, let mapVC = segue.destination as? MapViewController  else {
             return
         }
         
-        let mapVC = segue.destination as! MapViewController
-        mapVC.place.name = placeName.text!
-        mapVC.place.location = placeLocation.text
-        mapVC.place.type = placeType.text
-        mapVC.place.imageData = placeImage.image?.pngData() 
+        mapVC.incomeSegueIdentifier = identifier
+       mapVC.mapViewControllerDelegate = self
+        
+        if identifier == "showMap" {
+            mapVC.place.name = placeName.text!
+            mapVC.place.location = placeLocation.text
+            mapVC.place.type = placeType.text
+            mapVC.place.imageData = placeImage.image?.pngData() 
+        }
+        
     }
     
     func savePlace() {
@@ -203,4 +209,12 @@ extension NewPlaceViewController: UIImagePickerControllerDelegate, UINavigationC
         dismiss(animated: true, completion: nil)
         
     }
+}
+
+extension NewPlaceViewController: MapViewControllerDelegate{
+    func getAddress(_ address: String?) {
+        placeLocation.text = address
+    }
+    
+    
 }
